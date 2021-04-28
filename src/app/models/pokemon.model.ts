@@ -6,5 +6,7 @@ export class Pokemon {
 
     _id: string = "";
     name: string = "";
+    types: string[] = [];
+    image: string = "";
 
 }
