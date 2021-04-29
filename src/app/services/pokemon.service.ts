@@ -1,10 +1,17 @@
+// Angular Imports
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+// Application Imports
 import { environment } from 'src/environments/environment';
-import { Pokemon } from '../models/pokemon.model';
-import { BehaviorSubject } from 'rxjs';
-import { map, tap, filter, scan, retry, catchError } from 'rxjs/operators';
+
+// Model Imports
+import { PokemonCustom } from '../models/pokemon';
+import { PokemonDetailed } from '../models/pokemon-detailed';
+
+// Extern Imports
+import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 const url_api = environment.api;
 @Injectable({
@@ -13,16 +20,8 @@ const url_api = environment.api;
 
 export class PokemonService {
 
-  private readonly _currentPokemon = new BehaviorSubject<Pokemon>(null);
-  private readonly _allPokemon = new BehaviorSubject<Pokemon[]>([]);
-  private readonly _favoritePokemon = new BehaviorSubject<Pokemon[]>([]);
-
-  readonly currentPokemon$ = this._currentPokemon.asObservable();
-  readonly allPokemon$ = this._allPokemon.asObservable();
-  readonly favoritePokemon$ = this._favoritePokemon.asObservable();
-
-  allPokemon: Pokemon[] = [];
-  favoritePokemon: Pokemon[] = [];
+  // Array to contain favorites pokemon of current user
+  favoritesPokemon: PokemonDetailed[] = [];
 
   constructor(
 
@@ -32,12 +31,51 @@ export class PokemonService {
 
   }
 
-  allPokemons(limit: string) {
-    return this.http.get<any>(`${url_api}pokemon?limit=${limit}`);
+  // id = id or name pokemon to search.
+  getPokemon(id: string) {
+    return this.http.get<PokemonCustom>(`${url_api}pokemon/${id}`).pipe(
+      
+      map(
+        resp => {
+          // Convert object to type PokemonCustom
+          return PokemonCustom.pokemonFromJSON(resp)
+        }
+      ),
+      
+      catchError( this.handleError )
+
+    )
   }
 
-  getPokemon(id: string) {
-    return this.http.get<any>(`${url_api}pokemon/${id}`);
+  /* 
+    limit = quantity pokemon to return
+    offset = quantity pokemon to skip on PokéAPI
+  */
+  getPokemons(limit: number, offset: number) {
+    
+    return this.http.get<any>(`${url_api}pokemon?limit=${limit}&offset=${offset}`).pipe(
+      
+      map(res => {
+        let data = {
+          allPokemons: res.results,
+          quantity: res.count
+        }
+        return data;
+      }),
+
+      catchError( this.handleError )
+
+    )
+
+  }
+
+  // Function to handle all errors occurred on http requests
+  handleError(error: HttpErrorResponse) {
+
+    console.log("Ocurrió un error en el servicio");
+    console.warn(error);
+    return throwError("Fallo en la llamada API REST");
+
   }
 
 }

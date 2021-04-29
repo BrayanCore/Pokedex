@@ -1,6 +1,6 @@
 <div class="nav-bar">
     
-    <div class="link" *ngFor="let link of links">
+    <div class="link" *ngFor="let link of routesNavigation" (click)="goToSection(link)">
         {{link}}
     </div>
     

@@ -1,19 +1,36 @@
+@mixin class-main {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 90%;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
 // Small devices
 @media only screen and (min-width: 0px) and (max-width: 576px) {
-    
+    .main {
+        @include class-main();
+    }
 }
 
 // Medium devices  
 @media only screen and (min-width: 577px) and (max-width: 768px) {
-    
+    .main {
+        @include class-main();
+    }
 }
 
 // Large devices
 @media only screen and (min-width: 769px) and (max-width: 992px) {
-
+    .main {
+        @include class-main();
+    }
 }
 
 // Extra large devices
 @media only screen and (min-width: 993px) {
-    
+    .main {
+        @include class-main();
+    }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
@@ -7,11 +7,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationBarComponent implements OnInit {
 
+  @Input() routesNavigation: string[];
+
   links: string[] = ["Menú Principal", "Cátalogo", "Favoritos"];
 
-  constructor() { }
+  constructor(
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
+    
+  }
+
+  goToSection(section: string) {
+
+    switch (section) {
+      case this.links[1]:
+        
+        this._router.navigate(
+          [`/pokemones`]
+        );
+        break;
+
+      case this.links[2]:
+
+        this._router.navigate(
+            [`/pokemones`],
+            { queryParams: { favorites: true } },
+        );
+        
+        break;
+      
+      default:
+        this._router.navigate(
+          [``],
+        ); 
+        break;
+    }
+
   }
 
 }
