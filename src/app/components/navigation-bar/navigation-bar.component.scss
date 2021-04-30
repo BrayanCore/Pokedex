@@ -1,4 +1,4 @@
-.nav-bar {
+@mixin class-nav-bar() {
     height: 95%;
     width: 100vw;
     display: flex;
@@ -9,28 +9,91 @@
     border-bottom: 4px solid black;
 }
 
-.link {
+@mixin class-link($mobile) {
     text-align: center;
     width: 20%;
     cursor: pointer;
     color: black;
-    font-size: 1.3rem;
     font-family: monospace;
     background-color:  white;
-    border: 4px solid black;
-    padding: .5rem;
     border-radius: 2rem;
+    @if $mobile {
+        padding: .1rem;
+        font-size: .7rem;
+        border: 2px solid black;
+    } @else {
+        padding: .5rem;
+        font-size: 1.3rem;
+        border: 4px solid black;
+    }
 }
 
-.link:hover {
+@mixin class-link-hover($mobile) {
     text-align: center;
     width: 20%;
     cursor: pointer;
     color: white;
-    font-size: 2rem;
     font-family: monospace;
     background-color: #30a7d7;
     border: 4px solid white;
-    padding: 1rem;
     border-radius: 4rem;
+    @if $mobile {
+        font-size: 1rem;
+        padding: .1rem;
+    } @else {
+        font-size: 2rem;
+        padding: .5rem;
+    }
+}
+
+// Small devices
+@media only screen and (min-width: 0px) and (max-width: 576px) {
+    .nav-bar {
+        @include class-nav-bar();
+        .link {
+            @include class-link(true);
+        }
+        .link:hover {
+            @include class-link-hover(true);
+        }
+    }
+}
+
+// Medium devices  
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+    .nav-bar {
+        @include class-nav-bar();
+        .link {
+            @include class-link(false);
+        }
+        .link:hover {
+            @include class-link-hover(false);
+        }
+    }
+}
+
+// Large devices
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+    .nav-bar {
+        @include class-nav-bar();
+        .link {
+            @include class-link(false);
+        }
+        .link:hover {
+            @include class-link-hover(false);
+        }
+    }
+}
+
+// Extra large devices
+@media only screen and (min-width: 993px) {
+    .nav-bar {
+        @include class-nav-bar();
+        .link {
+            @include class-link(false);
+        }
+        .link:hover {
+            @include class-link-hover(false);
+        }
+    }
 }

@@ -21,7 +21,7 @@ const url_api = environment.api;
 export class PokemonService {
 
   // Array to contain favorites pokemon of current user
-  favoritesPokemon: PokemonDetailed[] = [];
+  favoritesPokemon: PokemonCustom[] = [];
 
   constructor(
 
@@ -32,13 +32,33 @@ export class PokemonService {
   }
 
   // id = id or name pokemon to search.
+  getPokemonDetailed(id: string) {
+    return this.http.get<PokemonCustom>(`${url_api}pokemon/${id}`).pipe(
+      
+      map(
+        resp => {
+
+          // Convert object to type PokemonDetailed
+          return PokemonDetailed.detailedPokemonFromJSON(resp);
+          
+        }
+      ),
+      
+      catchError( this.handleError )
+
+    )
+  }
+
+  // id = id or name pokemon to search.
   getPokemon(id: string) {
     return this.http.get<PokemonCustom>(`${url_api}pokemon/${id}`).pipe(
       
       map(
         resp => {
+
           // Convert object to type PokemonCustom
-          return PokemonCustom.pokemonFromJSON(resp)
+          return PokemonCustom.pokemonFromJSON(resp);
+        
         }
       ),
       

@@ -7,8 +7,10 @@ import { Router } from '@angular/router';
 })
 export class NavigationBarComponent implements OnInit {
 
+  // Received from component which is using this navigator
   @Input() routesNavigation: string[];
 
+  // Link availables, should make match with routesNavigatiom
   links: string[] = ["Menú Principal", "Cátalogo", "Favoritos"];
 
   constructor(

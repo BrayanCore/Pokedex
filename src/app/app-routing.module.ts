@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AllPokemonComponent } from './components/all-pokemon/all-pokemon.component';
-import { HomeComponent } from './components/home/home.component';
-import { PokemonComponent } from './components/pokemon/pokemon.component';
+const appRoutes: Routes = [
 
-const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule)
   },
   {
     path: 'pokemones',
-    component: AllPokemonComponent
+    loadChildren: () => import('./components/all-pokemon/all-pokemon.module').then(m => m.AllPokemonModule)
   },
   {
-    path: 'pokemon/:id',
-    component: PokemonComponent
+    path: 'pokemon',
+    loadChildren: () => import('./components/pokemon/pokemon.module').then(m => m.PokemonModule)
   }
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -20,8 +20,8 @@
                 </div>
                 <div class="buttons">
                     <button (click)="goDetailsPokemon(pokemon.id)" mat-raised-button class="details">Detalles</button>
-                    <button *ngIf="!favoritesMode" mat-raised-button class="favorites">Favorito</button>
-                    <button *ngIf="favoritesMode" mat-raised-button class="remove">Quitar</button>
+                    <button (click)="addLikeFavorite(pokemon)" *ngIf="!favoritesMode && !isFavorite(pokemon.id)" mat-raised-button class="favorites">Favorito</button>
+                    <button (click)="removeFromFavorites(pokemon.id)" *ngIf="favoritesMode" mat-raised-button class="remove">Quitar</button>
                 </div>
             </div>
             
